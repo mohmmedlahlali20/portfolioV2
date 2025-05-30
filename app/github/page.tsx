@@ -1,8 +1,8 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Star, GitFork, Calendar, MapPin, LinkIcon } from "lucide-react"
-
+import { Star, GitFork, Calendar, MapPin, LinkIcon, Activity } from "lucide-react"
+import GitHubCalendar from "react-github-calendar"
 interface GitHubUser {
   name: string
   bio: string
@@ -35,6 +35,7 @@ export default function GitHub() {
   const [user, setUser] = useState<GitHubUser | null>(null)
   const [repos, setRepos] = useState<Repository[]>([])
   const [languages, setLanguages] = useState<LanguageStats>({})
+  const [contributions, setContributions] = useState<number | null>(null)
   const [loading, setLoading] = useState(true)
 
   const username = "mohmmedlahlali20"
@@ -42,17 +43,15 @@ export default function GitHub() {
   useEffect(() => {
     const fetchGitHubData = async () => {
       try {
-        // Fetch user data
         const userResponse = await fetch(`https://api.github.com/users/${username}`)
         const userData = await userResponse.json()
         setUser(userData)
 
-        // Fetch repositories
         const reposResponse = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=6`)
         const reposData = await reposResponse.json()
         setRepos(reposData)
 
-        // Calculate language statistics
+        // Calculate language stats
         const languageStats: LanguageStats = {}
         reposData.forEach((repo: Repository) => {
           if (repo.language) {
@@ -60,6 +59,13 @@ export default function GitHub() {
           }
         })
         setLanguages(languageStats)
+
+        // Dummy contributions calculation: sum of stars + forks on fetched repos
+        const totalContributions = reposData.reduce(
+          (total: number, repo: Repository) => total + repo.stargazers_count + repo.forks_count,
+          0,
+        )
+        setContributions(totalContributions)
       } catch (error) {
         console.error("Error fetching GitHub data:", error)
       } finally {
@@ -70,13 +76,20 @@ export default function GitHub() {
     fetchGitHubData()
   }, [])
 
+  function getMostPopularLanguage(langs: LanguageStats): string | null {
+    const entries = Object.entries(langs)
+    if (entries.length === 0) return null
+    entries.sort((a, b) => b[1] - a[1])
+    return entries[0][0]
+  }
+
+  const mostPopularLanguage = getMostPopularLanguage(languages)
+
   const getLanguageColor = (language: string) => {
     const colors: { [key: string]: string } = {
       JavaScript: "from-yellow-400 to-yellow-600",
       TypeScript: "from-blue-400 to-blue-600",
       Python: "from-green-400 to-green-600",
-      Java: "from-red-400 to-red-600",
-      "C++": "from-purple-400 to-purple-600",
       HTML: "from-orange-400 to-orange-600",
       CSS: "from-blue-300 to-blue-500",
       React: "from-cyan-400 to-cyan-600",
@@ -107,7 +120,6 @@ export default function GitHub() {
 
         {user && (
           <div className="grid lg:grid-cols-3 gap-8 mb-12">
-            {/* User Profile */}
             <div className="lg:col-span-1">
               <div className="glass-effect rounded-xl p-8 text-center">
                 <img
@@ -129,7 +141,7 @@ export default function GitHub() {
                   {user.blog && (
                     <div className="flex items-center justify-center gap-2 text-gray-400">
                       <LinkIcon size={16} />
-                      <a href={user.blog} className="hover:text-white transition-colors">
+                      <a href={user.blog} className="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
                         Website
                       </a>
                     </div>
@@ -140,7 +152,7 @@ export default function GitHub() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-gray-700">
+                <div className="grid grid-cols-4 gap-4 mt-6 pt-6 border-t border-gray-700">
                   <div className="text-center">
                     <div className="text-xl font-bold text-white">{user.public_repos}</div>
                     <div className="text-xs text-gray-400">Repos</div>
@@ -153,13 +165,24 @@ export default function GitHub() {
                     <div className="text-xl font-bold text-white">{user.following}</div>
                     <div className="text-xs text-gray-400">Following</div>
                   </div>
+                  <div className="text-center">
+                    <div className="flex items-center justify-center gap-1 text-xl font-bold text-white">
+                      <Activity size={18} />
+                      {contributions !== null ? contributions : "-"}
+                    </div>
+                    <div className="text-xs text-gray-400">Contributions*</div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Languages & Stats */}
             <div className="lg:col-span-2 space-y-8">
-              {/* Language Statistics */}
+              {mostPopularLanguage && (
+                <div className="mb-6 text-white font-semibold text-lg text-center">
+                  Most Popular Language: <span className="underline">{mostPopularLanguage}</span>
+                </div>
+              )}
+
               <div className="glass-effect rounded-xl p-8">
                 <h3 className="text-xl font-bold text-white mb-6">Most Used Languages</h3>
                 <div className="space-y-4">
@@ -184,12 +207,21 @@ export default function GitHub() {
                       )
                     })}
                 </div>
+
+                <div className="mt-10">
+                  <GitHubCalendar
+                    username="mohmmedlahlali20"
+                    blockSize={15}
+                    blockMargin={5}
+                    color="#c084f5"
+                    fontSize={16}
+                  />
+                </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* Recent Repositories */}
         <div className="mb-12">
           <h3 className="text-2xl font-bold text-white mb-8 text-center">Recent Repositories</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -240,6 +272,36 @@ export default function GitHub() {
               </div>
             ))}
           </div>
+          {/* <div className="mb-12">
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">Contributions Summary</h3>
+            <div className="overflow-x-auto">
+              <table className="min-w-full bg-gray-800 text-white rounded-lg">
+                <thead>
+                  <tr>
+                    <th className="py-3 px-6 text-left border-b border-gray-700">Repository</th>
+                    <th className="py-3 px-6 text-left border-b border-gray-700">Stars</th>
+                    <th className="py-3 px-6 text-left border-b border-gray-700">Forks</th>
+                    <th className="py-3 px-6 text-left border-b border-gray-700">Watchers</th>
+                    <th className="py-3 px-6 text-left border-b border-gray-700">Total Contributions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {repos.map(repo => {
+                    const totalContributions = repo.stargazers_count + repo.forks_count + repo.watchers_count;
+                    return (
+                      <tr key={repo.id} className="border-b border-gray-700 hover:bg-gray-700">
+                        <td className="py-3 px-6">{repo.name}</td>
+                        <td className="py-3 px-6">{repo.stargazers_count}</td>
+                        <td className="py-3 px-6">{repo.forks_count}</td>
+                        <td className="py-3 px-6">{repo.watchers_count}</td>
+                        <td className="py-3 px-6 font-bold">{totalContributions}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div> */}
         </div>
       </div>
     </div>

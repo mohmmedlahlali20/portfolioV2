@@ -1,45 +1,45 @@
 "use client"
 
-import { Calendar, MapPin, Award, Coffee } from "lucide-react"
+import {  Code, Briefcase, GraduationCap, Globe } from "lucide-react"
 
 const timeline = [
   {
-    year: "2024",
-    title: "Senior Full Stack Developer",
-    company: "Tech Solutions Inc.",
-    description: "Leading development of enterprise applications using React, Node.js, and cloud technologies.",
+    year: "2025",
+    title: "Intern Full Stack Developer",
+    company: "IPPON Technologies",
+    description: "Worked on modern web solutions and collaborative development using Agile methodologies during a 3-month internship.",
     type: "work",
+  },
+  {
+    year: "2024",
+    title: "Intern Full Stack Developer",
+    company: "MedaiZain - buinco",
+    description: "Completed a 2-month internship focused on building and optimizing web interfaces using React and Node.js.",
+    type: "work",
+  },
+  {
+    year: "2023 - 2025",
+    title: "Full Stack Web Development Program",
+    company: "YouCode",
+    description: "Completed a two-year intensive program covering both frontend and backend development, project-based learning and agile methodologies.",
+    type: "education",
   },
   {
     year: "2023",
-    title: "Full Stack Developer",
-    company: "Digital Agency",
-    description: "Developed multiple client projects including e-commerce platforms and web applications.",
-    type: "work",
-  },
-  {
-    year: "2022",
-    title: "Frontend Developer",
-    company: "Startup Hub",
-    description: "Specialized in React development and UI/UX implementation for various startup projects.",
-    type: "work",
-  },
-  {
-    year: "2021",
-    title: "Computer Science Degree",
-    company: "University",
-    description: "Graduated with honors, focusing on software engineering and web technologies.",
+    title: "Baccalauréat in Science and Technology – Electrical Engineering",
+    company: "High School",
+    description: "Graduated with a strong foundation in applied sciences and electrical systems.",
     type: "education",
   },
 ]
 
-const stats = [
-  { label: "Years of Experience", value: "3+", icon: Calendar },
-  { label: "Projects Completed", value: "50+", icon: Award },
-  { label: "Cups of Coffee", value: "1000+", icon: Coffee },
-  { label: "Countries Worked", value: "5", icon: MapPin },
-]
 
+const stats = [
+  { label: "Projects Completed", value: "50+", icon: Code }, 
+  { label: "Internship Experience", value: "5 months", icon: Briefcase },
+  { label: "Tech Stack Mastered", value: "10+", icon: GraduationCap },
+  { label: "Collaborated With Teams", value: "3+", icon: Globe },
+];
 export default function About() {
   return (
     <div className="min-h-screen pt-24 pb-12">
@@ -54,29 +54,24 @@ export default function About() {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
-          {/* Personal Info */}
+          {/* Left Column */}
           <div className="space-y-6">
             <div className="glass-effect rounded-xl p-8">
               <h2 className="text-2xl font-bold mb-6 text-white">Who I Am</h2>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  I'm a passionate full-stack developer with over 3 years of experience creating innovative web
-                  solutions. My journey started with a curiosity about how websites work, and it has evolved into a deep
-                  love for crafting exceptional digital experiences.
+                  I'm a passionate and versatile full-stack developer with hands-on experience in building modern web and mobile applications. I have worked with a wide range of technologies including React Native, React.js, Vue.js, Next.js, NestJS, Express.js, Flask, and Laravel.
                 </p>
                 <p>
-                  I specialize in modern JavaScript frameworks, particularly React and Node.js, and I'm always eager to
-                  learn new technologies. I believe in writing clean, maintainable code and creating user-centered
-                  designs.
+                  I’m proficient in using databases like MongoDB, MySQL, and PostgreSQL, and I also work with tools like Docker, MinIO, and CI/CD pipelines to streamline development and deployment processes. I follow a modular and scalable project architecture, often using a monorepo structure.
                 </p>
                 <p>
-                  When I'm not coding, you can find me exploring new technologies, contributing to open-source projects,
-                  or sharing knowledge with the developer community.
+                  Over time, I’ve contributed to several full-featured projects such as e-commerce apps, media streaming platforms, and event management systems. I constantly seek to improve my skills and stay up-to-date with the latest technologies, while also preparing for professional certifications like the AWS Certified Developer – Associate.
                 </p>
               </div>
             </div>
 
-            {/* Stats */}
+            {/* Stats Section */}
             <div className="grid grid-cols-2 gap-4">
               {stats.map((stat) => {
                 const IconComponent = stat.icon
@@ -91,7 +86,7 @@ export default function About() {
             </div>
           </div>
 
-          {/* Timeline */}
+          {/* Right Column - Timeline */}
           <div className="glass-effect rounded-xl p-8">
             <h2 className="text-2xl font-bold mb-6 text-white">My Journey</h2>
             <div className="space-y-6">

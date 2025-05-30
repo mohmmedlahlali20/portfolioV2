@@ -81,7 +81,6 @@ export default function Skills() {
         </div>
 
         <div className="grid lg:grid-cols-4 gap-8">
-          {/* Category Selector */}
           <div className="lg:col-span-1">
             <div className="space-y-4">
               {skillCategories.map((category, index) => {
@@ -106,7 +105,6 @@ export default function Skills() {
             </div>
           </div>
 
-          {/* Skills Display */}
           <div className="lg:col-span-3">
             <div className="glass-effect rounded-xl p-8">
               <h2 className="text-2xl font-bold mb-8 text-white">{skillCategories[selectedCategory].title} Skills</h2>

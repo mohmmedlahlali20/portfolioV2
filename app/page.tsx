@@ -78,7 +78,6 @@ function MorphingShapes() {
       meshRef.current.rotation.y = state.clock.elapsedTime * 0.3
       meshRef.current.rotation.z = Math.cos(state.clock.elapsedTime * 0.3) * 0.2
 
-      // Change shape every 3 seconds
       const shapeIndex = Math.floor(state.clock.elapsedTime / 3) % shapes.length
       if (shapeIndex !== currentShape) {
         setCurrentShape(shapeIndex)
@@ -100,7 +99,6 @@ function MorphingShapes() {
   )
 }
 
-// Animation Option 3: Particle Galaxy
 function ParticleGalaxy() {
   const ref = useRef<THREE.Points>(null)
 
@@ -124,7 +122,7 @@ function ParticleGalaxy() {
       positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ
 
       const mixedColor = new THREE.Color()
-      mixedColor.setHSL(0.6 + Math.random() * 0.2, 0.8, 0.6)
+      mixedColor.setHSL(0.6 + Math.random() * 0.1, 0.8, 0.6)
 
       colors[i3] = mixedColor.r
       colors[i3 + 1] = mixedColor.g
@@ -136,7 +134,7 @@ function ParticleGalaxy() {
 
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.y = state.clock.elapsedTime * 0.1
+      ref.current.rotation.y = state.clock.elapsedTime * 0.5
     }
   })
 
@@ -151,7 +149,6 @@ function ParticleGalaxy() {
   )
 }
 
-// Animation Option 4: Floating Code Matrix
 function CodeMatrix() {
   const groupRef = useRef<THREE.Group>(null)
 

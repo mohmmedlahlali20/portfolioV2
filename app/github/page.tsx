@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { Star, GitFork, Calendar, MapPin, LinkIcon, Activity } from "lucide-react"
 import GitHubCalendar from "react-github-calendar"
+
 interface GitHubUser {
   name: string
   bio: string
@@ -51,7 +52,6 @@ export default function GitHub() {
         const reposData = await reposResponse.json()
         setRepos(reposData)
 
-        // Calculate language stats
         const languageStats: LanguageStats = {}
         reposData.forEach((repo: Repository) => {
           if (repo.language) {
@@ -60,7 +60,6 @@ export default function GitHub() {
         })
         setLanguages(languageStats)
 
-        // Dummy contributions calculation: sum of stars + forks on fetched repos
         const totalContributions = reposData.reduce(
           (total: number, repo: Repository) => total + repo.stargazers_count + repo.forks_count,
           0,
@@ -210,7 +209,7 @@ export default function GitHub() {
 
                 <div className="mt-10">
                   <GitHubCalendar
-                    username="mohmmedlahlali20"
+                    username={username}
                     blockSize={15}
                     blockMargin={5}
                     color="#c084f5"
@@ -272,36 +271,6 @@ export default function GitHub() {
               </div>
             ))}
           </div>
-          {/* <div className="mb-12">
-            <h3 className="text-2xl font-bold text-white mb-6 text-center">Contributions Summary</h3>
-            <div className="overflow-x-auto">
-              <table className="min-w-full bg-gray-800 text-white rounded-lg">
-                <thead>
-                  <tr>
-                    <th className="py-3 px-6 text-left border-b border-gray-700">Repository</th>
-                    <th className="py-3 px-6 text-left border-b border-gray-700">Stars</th>
-                    <th className="py-3 px-6 text-left border-b border-gray-700">Forks</th>
-                    <th className="py-3 px-6 text-left border-b border-gray-700">Watchers</th>
-                    <th className="py-3 px-6 text-left border-b border-gray-700">Total Contributions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {repos.map(repo => {
-                    const totalContributions = repo.stargazers_count + repo.forks_count + repo.watchers_count;
-                    return (
-                      <tr key={repo.id} className="border-b border-gray-700 hover:bg-gray-700">
-                        <td className="py-3 px-6">{repo.name}</td>
-                        <td className="py-3 px-6">{repo.stargazers_count}</td>
-                        <td className="py-3 px-6">{repo.forks_count}</td>
-                        <td className="py-3 px-6">{repo.watchers_count}</td>
-                        <td className="py-3 px-6 font-bold">{totalContributions}</td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div> */}
         </div>
       </div>
     </div>

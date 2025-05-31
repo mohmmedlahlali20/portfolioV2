@@ -98,107 +98,125 @@ export default function GitHub() {
 
   if (loading) {
     return (
-      <div className="min-h-screen pt-24 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center pt-24 px-4">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-400 mx-auto mb-4"></div>
-          <p className="text-gray-400">Loading GitHub data...</p>
+          <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-300 text-sm sm:text-base">Loading GitHub data...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen pt-24 pb-12">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+    <div className="min-h-screen pt-20 sm:pt-24 pb-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent mb-2 sm:mb-4">
             GitHub Profile
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">My coding journey and contributions on GitHub</p>
+          <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-2xl mx-auto px-4">
+            My coding journey and contributions on GitHub
+          </p>
         </div>
 
         {user && (
-          <div className="grid lg:grid-cols-3 gap-8 mb-12">
-            <div className="lg:col-span-1">
-              <div className="glass-effect rounded-xl p-8 text-center">
-                <img
-                  src={user.avatar_url || "/placeholder.svg"}
-                  alt={user.name}
-                  className="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-blue-400"
-                />
-                <h2 className="text-2xl font-bold text-white mb-2">{user.name}</h2>
-                <p className="text-gray-400 mb-4">@{username}</p>
-                {user.bio && <p className="text-gray-300 mb-6">{user.bio}</p>}
+          <div className="space-y-6 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-8 mb-8 sm:mb-12">
+            {/* Profile Card - Mobile First */}
+            <div className="glass-effect p-4 sm:p-6 rounded-xl text-center">
+              <img
+                src={user.avatar_url || "/placeholder.svg"}
+                alt={user.name}
+                className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full border-4 border-blue-500 mb-3 sm:mb-4"
+              />
+              <h2 className="text-xl sm:text-2xl font-bold text-white">{user.name}</h2>
+              <p className="text-gray-400 mb-2 text-sm sm:text-base">@{username}</p>
+              {user.bio && <p className="text-gray-300 mb-4 text-sm sm:text-base px-2">{user.bio}</p>}
 
-                <div className="space-y-3 text-sm">
-                  {user.location && (
-                    <div className="flex items-center justify-center gap-2 text-gray-400">
-                      <MapPin size={16} />
-                      <span>{user.location}</span>
-                    </div>
-                  )}
-                  {user.blog && (
-                    <div className="flex items-center justify-center gap-2 text-gray-400">
-                      <LinkIcon size={16} />
-                      <a href={user.blog} className="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
-                        Website
-                      </a>
-                    </div>
-                  )}
+              {/* User Info */}
+              <div className="text-xs sm:text-sm space-y-2 mb-4">
+                {user.location && (
                   <div className="flex items-center justify-center gap-2 text-gray-400">
-                    <Calendar size={16} />
-                    <span>Joined {new Date(user.created_at).getFullYear()}</span>
+                    <MapPin size={14} className="sm:w-4 sm:h-4" />
+                    <span>{user.location}</span>
                   </div>
+                )}
+                {user.blog && (
+                  <div className="flex items-center justify-center gap-2 text-gray-400">
+                    <LinkIcon size={14} className="sm:w-4 sm:h-4" />
+                    <a
+                      href={user.blog}
+                      className="hover:text-white transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Website
+                    </a>
+                  </div>
+                )}
+                <div className="flex items-center justify-center gap-2 text-gray-400">
+                  <Calendar size={14} className="sm:w-4 sm:h-4" />
+                  <span>Joined {new Date(user.created_at).getFullYear()}</span>
                 </div>
+              </div>
 
-                <div className="grid grid-cols-4 gap-4 mt-6 pt-6 border-t border-gray-700">
-                  <div className="text-center">
-                    <div className="text-xl font-bold text-white">{user.public_repos}</div>
-                    <div className="text-xs text-gray-400">Repos</div>
+              {/* Stats Grid - Responsive */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4 pt-4 border-t border-gray-700">
+                <div className="text-center">
+                  <div className="text-lg sm:text-xl font-bold text-white">{user.public_repos}</div>
+                  <div className="text-xs text-gray-400">Repos</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg sm:text-xl font-bold text-white">{user.followers}</div>
+                  <div className="text-xs text-gray-400">Followers</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg sm:text-xl font-bold text-white">{user.following}</div>
+                  <div className="text-xs text-gray-400">Following</div>
+                </div>
+                <div className="text-center">
+                  <div className="flex items-center justify-center gap-1 text-lg sm:text-xl font-bold text-white">
+                    <Activity size={16} className="sm:w-5 sm:h-5" />
+                    {contributions !== null ? contributions : "-"}
                   </div>
-                  <div className="text-center">
-                    <div className="text-xl font-bold text-white">{user.followers}</div>
-                    <div className="text-xs text-gray-400">Followers</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-xl font-bold text-white">{user.following}</div>
-                    <div className="text-xs text-gray-400">Following</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="flex items-center justify-center gap-1 text-xl font-bold text-white">
-                      <Activity size={18} />
-                      {contributions !== null ? contributions : "-"}
-                    </div>
-                    <div className="text-xs text-gray-400">Contributions*</div>
-                  </div>
+                  <div className="text-xs text-gray-400">Activity</div>
                 </div>
               </div>
             </div>
 
-            <div className="lg:col-span-2 space-y-8">
+            {/* Languages & Calendar */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Most Popular Language */}
               {mostPopularLanguage && (
-                <div className="mb-6 text-white font-semibold text-lg text-center">
-                  Most Popular Language: <span className="underline">{mostPopularLanguage}</span>
+                <div className="text-center">
+                  <div className="text-base sm:text-lg font-semibold text-white">
+                    Most Popular Language:{" "}
+                    <span className="bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+                      {mostPopularLanguage}
+                    </span>
+                  </div>
                 </div>
               )}
 
-              <div className="glass-effect rounded-xl p-8">
-                <h3 className="text-xl font-bold text-white mb-6">Most Used Languages</h3>
-                <div className="space-y-4">
+              {/* Languages Stats */}
+              <div className="glass-effect p-4 sm:p-6 rounded-xl">
+                <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 text-white">Top Languages</h3>
+                <div className="space-y-3 sm:space-y-4">
                   {Object.entries(languages)
                     .sort(([, a], [, b]) => b - a)
                     .slice(0, 5)
                     .map(([language, count]) => {
-                      const percentage = (count / Object.values(languages).reduce((a, b) => a + b, 0)) * 100
+                      const total = Object.values(languages).reduce((a, b) => a + b, 0)
+                      const percentage = (count / total) * 100
                       return (
-                        <div key={language} className="space-y-2">
-                          <div className="flex justify-between items-center">
+                        <div key={language}>
+                          <div className="flex justify-between text-sm mb-1">
                             <span className="text-white font-medium">{language}</span>
                             <span className="text-gray-400">{count} repos</span>
                           </div>
-                          <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
+                          <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
                             <div
-                              className={`h-full bg-gradient-to-r ${getLanguageColor(language)} rounded-full transition-all duration-1000`}
+                              className={`h-full bg-gradient-to-r ${getLanguageColor(language)} transition-all duration-1000`}
                               style={{ width: `${percentage}%` }}
                             />
                           </div>
@@ -207,51 +225,61 @@ export default function GitHub() {
                     })}
                 </div>
 
-                <div className="mt-10">
-                  <GitHubCalendar
-                    username={username}
-                    blockSize={15}
-                    blockMargin={5}
-                    color="#c084f5"
-                    fontSize={16}
-                  />
+                {/* GitHub Calendar - Mobile Responsive */}
+                <div className="mt-6 sm:mt-8">
+                  <h4 className="text-base sm:text-lg font-semibold mb-4 text-white">Contribution Activity</h4>
+                  <div className="overflow-x-auto">
+                    <div className="min-w-[300px]">
+                      <GitHubCalendar
+                        username={username}
+                        blockSize={window.innerWidth < 640 ? 10 : 15}
+                        blockMargin={window.innerWidth < 640 ? 3 : 5}
+                        color="#c084f5"
+                        fontSize={window.innerWidth < 640 ? 12 : 16}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        <div className="mb-12">
-          <h3 className="text-2xl font-bold text-white mb-8 text-center">Recent Repositories</h3>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Repositories Section */}
+        <div>
+          <h3 className="text-xl sm:text-2xl font-bold text-center mb-6 sm:mb-8 text-white">Recent Repositories</h3>
+          <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {repos.map((repo) => (
-              <div key={repo.id} className="glass-effect rounded-xl p-6 hover:scale-105 transition-all duration-300">
-                <div className="flex items-start justify-between mb-4">
-                  <h4 className="text-lg font-semibold text-white truncate">{repo.name}</h4>
+              <div
+                key={repo.id}
+                className="glass-effect p-4 sm:p-6 rounded-xl hover:scale-105 transition-all duration-300 group"
+              >
+                <div className="flex justify-between items-start mb-3 sm:mb-4">
+                  <h4 className="font-semibold text-base sm:text-lg text-white truncate pr-2">{repo.name}</h4>
                   <a
                     href={repo.html_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="text-gray-400 hover:text-white transition-colors flex-shrink-0"
                   >
                     <LinkIcon size={16} />
                   </a>
                 </div>
 
-                <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+                <p className="text-gray-400 text-sm mb-4 line-clamp-2 leading-relaxed">
                   {repo.description || "No description available"}
                 </p>
 
-                <div className="flex items-center justify-between text-sm text-gray-400">
-                  <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 text-sm text-gray-400 mb-3">
+                  <div className="flex items-center gap-2">
                     {repo.language && (
                       <span className="flex items-center gap-1">
                         <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${getLanguageColor(repo.language)}`} />
-                        {repo.language}
+                        <span className="text-xs sm:text-sm">{repo.language}</span>
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex gap-3">
                     <span className="flex items-center gap-1">
                       <Star size={14} />
                       {repo.stargazers_count}
@@ -263,10 +291,8 @@ export default function GitHub() {
                   </div>
                 </div>
 
-                <div className="mt-4 pt-4 border-t border-gray-700">
-                  <span className="text-xs text-gray-500">
-                    Updated {new Date(repo.updated_at).toLocaleDateString()}
-                  </span>
+                <div className="text-xs text-gray-500 pt-2 border-t border-gray-700">
+                  Updated {new Date(repo.updated_at).toLocaleDateString()}
                 </div>
               </div>
             ))}
